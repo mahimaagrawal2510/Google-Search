@@ -1,10 +1,11 @@
 import React from 'react'
 
-function SearchBarIcons({icon}) {
+function SearchBarIcons({ icon }) {
   return (
-    <div className='h-8 w-8 cursor-pointer flex justify-center items-center'>
-                        {icon}
-                    </div>
+    <div
+      className='h-8 w-8 cursor-pointer flex justify-center items-center'>
+      {icon}
+    </div>
   )
 }
 
