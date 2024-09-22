@@ -1,25 +1,32 @@
 import React from 'react'
-import { useState } from 'react'
 
-const SearchedImages = ({searchResultsArr, handlePopImage, selectedImage}) => {
-   const popImageData = (image) => {
+const SearchedImages = ({ searchResultsArr, handlePopImage, selectedImage, isActive, setIsActive }) => {
+
+  const popImageData = (image) => {
     handlePopImage(image)
-  
-   }
-  
+  }
+
   return (
-    <div className='flex flex-wrap gap-4'>
-        {searchResultsArr?.map((image, i) => {
-            return <div key={image.id} className={`grow p-2 rounded-xl flex flex-col gap-1 justify-between cursor-pointer ${selectedImage.id == image.id? "border-2 border-[#a8c7fa] bg-[#d0e2ff]" : ""}`} onClick={()=>{popImageData(image)}}>
-                <div className='w-full h-full'>
-                    <img alt={image.author} src={image.download_url} className='max-w-[300px]'/>
 
-                </div>
-                <span>{image.author}</span>
-
-            </div>
-        })}
-       
+    <div className={`column-count gap-x-4 p-[10px] mx-auto columns-2 md:columns-4 sm:columns-3 
+  ${isActive ? " columns-1 md:columns-1 lg:columns-2" : ""}`}>
+      {searchResultsArr?.map((image, i) => (
+        <div key={i}
+          className="cursor-pointer mb-4 breakInside"
+          onClick={() => popImageData(image)}
+        >
+          <img
+            src={image.download_url}
+            alt={image.author}
+            className="w-full block rounded-lg shadow-md transition-transform duration-300 ease transform hover:scale-105"
+          />
+          <span
+            className="block mt-2"
+          >
+            {image.author}
+          </span>
+        </div>
+      ))}
     </div>
   )
 }
