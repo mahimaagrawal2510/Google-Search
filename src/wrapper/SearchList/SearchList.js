@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-
 import { getData } from "../../Utilities/utilities";
 import SearchedImages from "../../components/SearchedImages/SearchedImages";
 import Loader from '../../components/Loader/Loader';
 import ImagePopOver from '../../components/ImagePopOver/ImagePopOver';
+import Header from "../../components/Header/Header";
+import { API_URL, LIMIT } from '../../Utilities/constants';
 
-import Header from "../../components/Header/Header"
 const SearchList = () => {
+
     const [searchResultsArr, setSearchResultsArr] = useState([]);
     const [selectedImage, setSelectedImage] = useState({});
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(30);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [isActive, setIsActive] = useState(false);
-
+    
     const handlePopImage = (image) => {
-        getData(`https://picsum.photos/id/${image.id}/info`, {}, (res) => {
-            setIsActive(true)
+        getData(`${API_URL}/id/${image.id}/info`, {}, (res) => {
+            setIsActive(true);
             setSelectedImage(image);
         });
     };
@@ -30,7 +30,7 @@ const SearchList = () => {
     useEffect(() => {
         const fetchImages = () => {
             setIsLoading(true);
-            getData(`https://picsum.photos/v2/list?page=${page}&limit=${limit}`, {}, (res) => {
+            getData(`${API_URL}/v2/list?page=${page}&limit=${LIMIT}`, {}, (res) => {
                 if (res.length === 0) {
                     setHasMore(false);
                 } else {
@@ -41,7 +41,7 @@ const SearchList = () => {
         };
 
         fetchImages();
-    }, [page, limit]);
+    }, [page]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -60,14 +60,11 @@ const SearchList = () => {
 
     return (
         <div>
-            {isLoading && page === 1 && <Loader />}
             <Header />
             <div className='flex gap-4 relative flex-col-reverse md:flex-row'>
                 {
                     searchResultsArr?.length > 0 &&
-                    <div>
-                        <SearchedImages isActive={isActive} setIsActive={setIsActive} searchResultsArr={searchResultsArr} handlePopImage={handlePopImage} selectedImage={selectedImage} />
-                    </div>
+                    <SearchedImages isActive={isActive} searchResultsArr={searchResultsArr} handlePopImage={handlePopImage} />
                 }
 
                 {
